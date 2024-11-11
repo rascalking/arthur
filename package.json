@@ -1,0 +1,21 @@
+{
+  "name": "arthur",
+  "devDependencies": {
+    "parcel": "^2.12.0"
+  },
+  "dependencies": {
+    "@atproto/api": "^0.13.14"
+  },
+  "version": "1.0.0",
+  "description": "bluesky client",
+  "source": "src/index.html",
+  "repository": "https://github.com/rascalking/arthur",
+  "author": "Dave Bonner <dbonner@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "scripts": {
+    "build": "parcel build",
+    "clean": "rm -rf dist",
+    "start": "parcel"
+  }
+}
