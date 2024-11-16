@@ -14,13 +14,13 @@ async function getAgent(creds) {
 }
 
 class BskyTimeline extends HTMLElement {
-  static observedAttributes = ['src', 'pageSize'];
+  static observedAttributes = ['src', 'page-size'];
   static #defaultTimelinePageSize = 30;
 
   attributeChangedCallback(name, oldValue, newValue) {
     console.log(`Attribute ${name} has changed from ${oldValue} to ${newValue}.`);
     // TODO: handle changes to src
-    if (name === 'pageSize') {
+    if (name === 'page-size') {
       if (typeof(newValue) === 'string') {
         newValue = parseInt(newValue);
       }
@@ -33,7 +33,7 @@ class BskyTimeline extends HTMLElement {
   connectedCallback() {
     this._internals.src = this.getAttribute('src');
     // TODO: actually handle src being defined (should be a feed url)
-    this._internals.pageSize = this.getAttribute('pageSize') || BskyTimeline.defaultTimelinePageSize;
+    this._internals.pageSize = this.getAttribute('page-size') || BskyTimeline.defaultTimelinePageSize;
     this._internals.cursor = '';
     this.getNextPage()
   }
@@ -49,8 +49,10 @@ class BskyTimeline extends HTMLElement {
       limit: this._internals.pageSize,
     });
     console.log(data);
+
     const { feed: posts } = data;
-    this._internals.cursor = ''; // TODO
+    this._internals.cursor = data.cursor;
+
     for (const post of posts) {
       const postWrapper = document.createElement('div');
       postWrapper.classList.add('post');
@@ -84,7 +86,9 @@ customElements.define('bluesky-timeline', BskyTimeline);
 
 async function showBskyTimeline() {
   const main = document.getElementsByTagName('main')[0];
-  main.append(document.createElement('bluesky-timeline'));
+  const timeline = document.createElement('bluesky-timeline');
+  timeline.setAttribute('page-size', 10);
+  main.append(timeline);
 }
 
 getAgent(creds)
