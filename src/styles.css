@@ -5,3 +5,7 @@ h1 {
 div.post {
   border: solid;
 }
+
+img.avatar {
+  float: left;
+}
