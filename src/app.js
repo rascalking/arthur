@@ -44,7 +44,7 @@ async function populateNav() {
 async function showBskyTimeline(uri) {
   const main = document.getElementsByTagName('main')[0];
   const timeline = document.createElement('bluesky-timeline');
-  timeline.setAttribute('page-size', 10);
+  timeline.setAttribute('page-size', 20);
   timeline.setAttribute('src', uri);
   main.replaceChildren(timeline);
 }
