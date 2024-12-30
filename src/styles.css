@@ -4,8 +4,33 @@ h1 {
 
 div.post {
   border: solid;
+
+  div.post-contents-container {
+    display: flex;
+
+    div.post-avatar {
+      flex: none;
+      padding-right: 10px;
+    }
+
+    div.post-contents {
+      padding-left: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+div.post img.thumbnail {
+  max-width: 200px;
+  max-height: 200px;
+}
+
+div.post div.post-contents-text {
+  white-space: pre-wrap;
 }
 
 img.avatar {
-  float: left;
+  width: 50px;
+  height: 50px;
 }

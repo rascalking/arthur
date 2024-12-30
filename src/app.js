@@ -15,7 +15,6 @@ async function getAgent(creds) {
 }
 
 async function navClick(evt) {
-  console.log(evt);
   if (evt.target.tagName.toLowerCase() === 'li') {
     const uri = evt.target.dataset.uri || '';
     document.querySelector('bluesky-timeline').setAttribute('src', uri);
@@ -25,10 +24,14 @@ async function navClick(evt) {
 async function populateNav() {
   document.agent.app.bsky.graph.getLists({actor: document.agent.accountDid})
     .then((resp) => {
+      if (!resp.success) {
+        console.error("unable to fetch user's lists");
+        console.debug(resp);
+        return;
+      }
       const ul = document.querySelector('nav > ul');
       for (const list of resp.data.lists) {
         // TODO: do i need to worry about paging here?
-        console.log(list);
         const li = document.createElement('li')
         li.append(document.createTextNode(list.name));
         li.dataset.uri = list.uri;

@@ -7,7 +7,7 @@
     "@atproto/api": "^0.13.14"
   },
   "version": "1.0.0",
-  "description": "bluesky client",
+  "description": "arthur bluesky client",
   "source": "src/index.html",
   "repository": "https://github.com/rascalking/arthur",
   "author": "Dave Bonner <dbonner@gmail.com>",
