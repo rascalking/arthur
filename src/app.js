@@ -14,20 +14,44 @@ async function getAgent(creds) {
   return agent;
 }
 
+async function navClick(evt) {
+  console.log(evt);
+  if (evt.target.tagName.toLowerCase() === 'li') {
+    const uri = evt.target.dataset.uri || '';
+    document.querySelector('bluesky-timeline').setAttribute('src', uri);
+  }
+}
+
+async function populateNav() {
+  document.agent.app.bsky.graph.getLists({actor: document.agent.accountDid})
+    .then((resp) => {
+      const ul = document.querySelector('nav > ul');
+      for (const list of resp.data.lists) {
+        // TODO: do i need to worry about paging here?
+        console.log(list);
+        const li = document.createElement('li')
+        li.append(document.createTextNode(list.name));
+        li.dataset.uri = list.uri;
+        ul.append(li);
+      }
+      ul.addEventListener('click', navClick);
+    });
+}
+
 async function showBskyTimeline(uri) {
   const main = document.getElementsByTagName('main')[0];
   const timeline = document.createElement('bluesky-timeline');
   timeline.setAttribute('page-size', 10);
-  if (uri) {
-    timeline.setAttribute('src', uri);
-  }
-  main.append(timeline);
+  timeline.setAttribute('src', uri);
+  main.replaceChildren(timeline);
 }
 
 getAgent(creds)
   .then((agent_) => {
     document.agent = agent_;
-    showBskyTimeline('at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/bsky-team');
+    populateNav();
+    showBskyTimeline('');
+    //showBskyTimeline('at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/bsky-team');
     /*
     agent_.app.bsky.graph.getLists({actor: agent_.accountDid})
       .then((resp) => {

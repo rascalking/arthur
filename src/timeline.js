@@ -20,7 +20,7 @@ class BskyTimeline extends HTMLElement {
       case 'src':
         this.src = newValue;
         this.cursor = '';
-        this.getNextPage(); // TODO: should we wait for this to finish?
+        this.getNextPage({replace: true}); // TODO: should we wait for this to finish?
         break;
     }
   }
@@ -30,9 +30,10 @@ class BskyTimeline extends HTMLElement {
   }
 
 
-  async getNextPage() {
+  async getNextPage(options) {
     let response;
     if (this.src === '') {
+      console.log('following');
       response = await document.agent.getTimeline({
         cursor: this.cursor,
         limit: this.pageSize,
@@ -66,6 +67,10 @@ class BskyTimeline extends HTMLElement {
     const { feed: posts } = data;
     this.cursor = data.cursor;
 
+    if (options.replace) {
+      this.replaceChildren();
+    }
+
     for (const post of posts) {
       const postWrapper = document.createElement('div');
       postWrapper.classList.add('post');
@@ -95,4 +100,5 @@ class BskyTimeline extends HTMLElement {
     }
   }
 }
+
 customElements.define('bluesky-timeline', BskyTimeline);
