@@ -87,6 +87,17 @@ class BskyTimeline extends HTMLElement {
   async renderEmbed(data) {
     const embed = document.createElement('div');
     switch (data.$type) {
+      case 'app.bsky.embed.external#view':
+        // TODO: this should be better than a link?
+        embed.classList.add('post-contents-external');
+        const anchor = document.createElement('a');
+        anchor.setAttribute('href', data.external.uri);
+        anchor.setAttribute('target', '_blank');
+        anchor.append(document.createTextNode(
+          `${data.external.title} // ${data.external.description}`));
+        embed.append(anchor);
+        break;
+
       case 'app.bsky.embed.images#view':
         // TODO: lightbox popout for the images
         embed.classList.add('post-contents-images');
