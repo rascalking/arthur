@@ -1,4 +1,5 @@
 class BskyTimeline extends HTMLElement {
+  // TODO: add column headers
   static observedAttributes = ['page-size', 'src'];
   static #defaultTimelinePageSize = 30;
   static #urlRegex = /at:\/\/(?<authority>[^\/]+)\/(?<collection>[^\/]+)\/(?<rkey>[^\/]+)/;
@@ -30,7 +31,6 @@ class BskyTimeline extends HTMLElement {
   constructor() {
     super();
   }
-
 
   async getNextPage(options) {
     let response;
@@ -75,7 +75,7 @@ class BskyTimeline extends HTMLElement {
     console.debug(response);
     this.cursor = response.data.cursor;
 
-    if (options.replace) {
+    if (options && options.replace) {
       this.replaceChildren();
     }
 

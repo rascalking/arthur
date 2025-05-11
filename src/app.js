@@ -14,14 +14,7 @@ async function getAgent(creds) {
   return agent;
 }
 
-async function navClick(evt) {
-  if (evt.target.tagName.toLowerCase() === 'li') {
-    const uri = evt.target.dataset.uri || '';
-    document.querySelector('bluesky-timeline').setAttribute('src', uri);
-  }
-}
-
-async function populateNav() {
+async function populateColumns() {
   document.agent.app.bsky.graph.getLists({actor: document.agent.accountDid})
     .then((resp) => {
       if (!resp.success) {
@@ -29,41 +22,32 @@ async function populateNav() {
         console.debug(resp);
         return;
       }
-      const ul = document.querySelector('nav > ul');
       for (const list of resp.data.lists) {
         // TODO: do i need to worry about paging here?
-        const li = document.createElement('li')
-        li.append(document.createTextNode(list.name));
-        li.dataset.uri = list.uri;
-        ul.append(li);
+        console.log(list.uri);
+        showBskyTimeline(list.uri);
       }
-      ul.addEventListener('click', navClick);
     });
 }
 
-async function showBskyTimeline(uri) {
+async function showBskyTimeline(uri, options) {
   const main = document.getElementsByTagName('main')[0];
   const timeline = document.createElement('bluesky-timeline');
+  timeline.classList.add('column');
   timeline.setAttribute('page-size', 20);
   timeline.setAttribute('src', uri);
-  main.replaceChildren(timeline);
+  if (options && options.replace) {
+    main.replaceChildren(timeline);
+  } else {
+    main.append(timeline);
+  }
 }
 
 getAgent(creds)
   .then((agent_) => {
     document.agent = agent_;
-    populateNav();
-    showBskyTimeline('');
-    //showBskyTimeline('at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/bsky-team');
-    /*
-    agent_.app.bsky.graph.getLists({actor: agent_.accountDid})
-      .then((resp) => {
-        let list = resp.data.lists[0];
-        console.log(list);
-        //showBskyTimeline(list.uri);
-        //
-      });
-      */
+    showBskyTimeline('', {replace: true});
+    populateColumns();
   })
   .catch((error) => {
     console.error(error);

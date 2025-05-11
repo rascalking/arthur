@@ -16,6 +16,6 @@
   "scripts": {
     "build": "parcel build",
     "clean": "rm -rf dist",
-    "start": "parcel"
+    "start": "parcel serve --no-cache"
   }
 }

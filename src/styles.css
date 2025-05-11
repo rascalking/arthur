@@ -1,5 +1,11 @@
-h1 {
-	color: hotpink;
+.column {
+  overflow-y: scroll;
+  overscroll-behavior-y: contain;
+  flex: 0 0 300px;
+}
+
+body {
+  height: 100vh;
 }
 
 div.post {
@@ -30,7 +36,26 @@ div.post div.post-contents-text {
   white-space: pre-wrap;
 }
 
+h1 {
+	color: hotpink;
+}
+
+header {
+  height: 50px;
+}
+
+html {
+  box-sizing: content-box;
+}
+
 img.avatar {
   width: 50px;
   height: 50px;
+}
+
+main {
+  display: flex;
+  align-items: stretch;
+  overflow-x: scroll;
+  height: 100%;
 }
